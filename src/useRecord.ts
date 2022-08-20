@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import { Reducer, useMemo, useReducer } from "react";
 import {
   GetValue,
   GetValues,
@@ -12,7 +12,7 @@ import {
 export const useRecord = <TRecord extends IRecord>(
   props: UseRecordProps<TRecord>
 ): UseRecordReturns<TRecord> => {
-  const [state, dispatch] = React.useReducer<React.Reducer<TRecord, IRecord>>(
+  const [state, dispatch] = useReducer<Reducer<TRecord, IRecord>>(
     (state, action) => ({ ...state, ...action }),
     props.defaultValues
   );
