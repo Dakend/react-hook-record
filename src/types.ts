@@ -7,6 +7,23 @@ export type Value<
   TKey extends Key<TRecord>
 > = TRecord[TKey];
 
+export type SetValue = <TRecord extends IRecord>(
+  dispatch: React.Dispatch<IRecord>
+) => UseRecordSetValue<TRecord>;
+
+export type GetValue = <TRecord extends IRecord>(
+  state: TRecord
+) => UseRecordGetValue<TRecord>;
+
+export type GetValues = <TRecord extends IRecord>(
+  state: TRecord
+) => UseRecordGetValues<TRecord>;
+
+export type Reset = <TRecord extends IRecord>(
+  dispatch: React.Dispatch<IRecord>,
+  defaultValues: TRecord
+) => UseRecordReset;
+
 export type UseRecordSetValue<TRecord extends IRecord> = <
   TKey extends Key<TRecord>
 >(
@@ -14,13 +31,13 @@ export type UseRecordSetValue<TRecord extends IRecord> = <
   value: Value<TRecord, TKey>
 ) => void;
 
-export type UseRecordGetValues<TRecord extends IRecord> = () => TRecord;
-
 export type UseRecordGetValue<TRecord extends IRecord> = <
   TKey extends Key<TRecord>
 >(
   key: TKey
 ) => Value<TRecord, TKey>;
+
+export type UseRecordGetValues<TRecord extends IRecord> = () => TRecord;
 
 export type UseRecordReset = () => void;
 

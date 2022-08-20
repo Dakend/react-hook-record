@@ -1,12 +1,12 @@
-import React from "react";
+import React, { useMemo } from "react";
 import {
+  GetValue,
+  GetValues,
   IRecord,
-  UseRecordGetValue,
-  UseRecordGetValues,
+  Reset,
+  SetValue,
   UseRecordProps,
-  UseRecordReset,
   UseRecordReturns,
-  UseRecordSetValue,
 } from "./types";
 
 export const useRecord = <TRecord extends IRecord>(
@@ -16,26 +16,19 @@ export const useRecord = <TRecord extends IRecord>(
     (state, action) => ({ ...state, ...action }),
     props.defaultValues
   );
-
-  const setValue: UseRecordSetValue<TRecord> = React.useCallback(
-    (key, value) => dispatch({ [key]: value }),
-    []
-  );
-  const getValue: UseRecordGetValue<TRecord> = React.useCallback(
-    (key) => state[key],
-    [state]
-  );
-  const getValues: UseRecordGetValues<TRecord> = React.useCallback(
-    () => state,
-    [state]
-  );
-  const reset: UseRecordReset = React.useCallback(
-    () => dispatch(props.defaultValues),
-    [props.defaultValues]
-  );
-
-  return React.useMemo(
-    () => ({ setValue, getValue, getValues, reset }),
-    [getValues, getValue, reset, setValue]
+  return useMemo(
+    () => ({
+      setValue: setValue(dispatch),
+      getValue: getValue(state),
+      getValues: getValues(state),
+      reset: reset(dispatch, props.defaultValues),
+    }),
+    [props.defaultValues, state]
   );
 };
+
+const setValue: SetValue = (dispatch) => (key, value) =>
+  dispatch({ [key]: value });
+const getValue: GetValue = (state) => (key) => state[key];
+const getValues: GetValues = (state) => () => state;
+const reset: Reset = (dispatch, defaultValues) => () => dispatch(defaultValues);
