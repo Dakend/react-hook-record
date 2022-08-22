@@ -1,28 +1,8 @@
 export type IRecord = Record<string, unknown>;
 
-export type Key<TRecord extends IRecord> = keyof TRecord & string;
+type Key<TRecord extends IRecord> = keyof TRecord & string;
 
-export type Value<
-  TRecord extends IRecord,
-  TKey extends Key<TRecord>
-> = TRecord[TKey];
-
-export type SetValue = <TRecord extends IRecord>(
-  dispatch: React.Dispatch<IRecord>
-) => UseRecordSetValue<TRecord>;
-
-export type GetValue = <TRecord extends IRecord>(
-  state: TRecord
-) => UseRecordGetValue<TRecord>;
-
-export type GetValues = <TRecord extends IRecord>(
-  state: TRecord
-) => UseRecordGetValues<TRecord>;
-
-export type Reset = <TRecord extends IRecord>(
-  dispatch: React.Dispatch<IRecord>,
-  defaultValues: TRecord
-) => UseRecordReset;
+type Value<TRecord extends IRecord, TKey extends Key<TRecord>> = TRecord[TKey];
 
 export type UseRecordSetValue<TRecord extends IRecord> = <
   TKey extends Key<TRecord>
